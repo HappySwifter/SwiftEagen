@@ -205,76 +205,76 @@ struct SmartIDResultReporter : public se::smartid::ResultReporterInterface {
     return zipPath;
 }
 
-//#pragma mark SmartIDResultReporter implementation
-//
-//BOOL SmartIDResultReporter::HasAnyValue(const se::smartid::RecognitionResult &result) {
-//    const std::vector<std::string> &stringFieldNames = result.GetStringFieldNames();
-//    for (size_t i = 0; i < stringFieldNames.size(); ++i) {
-//        const se::smartid::StringField &field = result.GetStringField(stringFieldNames[i]);
-//        if (sessionType != SESessionTypeCardReader && field.IsAccepted())
-//            return true;
-//        else if (field.GetConfidence() > 0.25)
-//            return true;
-//    }
-//    return false;
-//}
-//
-//void SmartIDResultReporter::SnapshotRejected() {
-//    dispatch_async(dispatch_get_main_queue(), ^{
-//        [wrapper.delegate didUpdateHint:nil];
-//    });
-//}
-//
-//void SmartIDResultReporter::DocumentMatched(const se::smartid::MatchResult &result) {
-//    // this method is useless,
-//    // SE will not perform additional checks to ensure matched quad is actual document
-//}
-//
-//void SmartIDResultReporter::SnapshotProcessed(const se::smartid::RecognitionResult &result) {
-//    // TODO: check for session type and check for any value on non-card sessions
-//    //if(HasAnyValue(result) && result.GetMatchResults().size() > 0) {
-//    if (result.GetMatchResults().size() > 0) {
-//        se::smartid::Quadrangle quad = result.GetMatchResults()[0].GetQuadrangle();
-//        NSArray* cardPoints = [NSArray arrayWithObjects:
-//                               [NSValue valueWithCGPoint:CGPointMake(quad.GetPoint(0).x, quad.GetPoint(0).y)],
-//                               [NSValue valueWithCGPoint:CGPointMake(quad.GetPoint(1).x, quad.GetPoint(1).y)],
-//                               [NSValue valueWithCGPoint:CGPointMake(quad.GetPoint(2).x, quad.GetPoint(2).y)],
-//                               [NSValue valueWithCGPoint:CGPointMake(quad.GetPoint(3).x, quad.GetPoint(3).y)],
-//                               nil];
-//         dispatch_async(dispatch_get_main_queue(), ^{
-//             [wrapper.delegate didUpdateHint:cardPoints];
-//         });
-//    } else {
-//        dispatch_async(dispatch_get_main_queue(), ^{
-//            [wrapper.delegate didUpdateHint:nil];
-//        });
-//    }
-//
-//    if (!result.IsTerminal())
-//        return;
-//
-//    NSMutableDictionary *fields = [[NSMutableDictionary alloc] init];
-//    const std::vector<std::string> &stringFieldNames = result.GetStringFieldNames();
-//    for (size_t i = 0; i < stringFieldNames.size(); ++i) {
-//        const se::smartid::StringField &field = result.GetStringField(stringFieldNames[i]);
-//        RecognitionField* rf = [[RecognitionField alloc] initWithName:[NSString stringWithUTF8String:field.GetName().c_str()]
-//                                                                value:[NSString stringWithUTF8String:field.GetUtf8Value().c_str()]
-//                                                           isAccepted:field.IsAccepted()
-//                                                           confidence:field.GetConfidence()];
-//        [fields setObject:rf forKey:rf.Name];
-//    }
-//
-//    if ([NSThread isMainThread]) {
-//        [wrapper.delegate didRecognize:fields];
-//    } else {
-//        dispatch_sync(dispatch_get_main_queue(), ^{
-//            [wrapper.delegate didRecognize:fields];
-//        });
-//    }
-//}
-//
-//SmartIDResultReporter::~SmartIDResultReporter() {
-//    wrapper = nil;
-//}
-//
+#pragma mark SmartIDResultReporter implementation
+
+BOOL SmartIDResultReporter::HasAnyValue(const se::smartid::RecognitionResult &result) {
+    const std::vector<std::string> &stringFieldNames = result.GetStringFieldNames();
+    for (size_t i = 0; i < stringFieldNames.size(); ++i) {
+        const se::smartid::StringField &field = result.GetStringField(stringFieldNames[i]);
+        if (sessionType != SESessionTypeCardReader && field.IsAccepted())
+            return true;
+        else if (field.GetConfidence() > 0.25)
+            return true;
+    }
+    return false;
+}
+
+void SmartIDResultReporter::SnapshotRejected() {
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [wrapper.delegate didUpdateHint:nil];
+    });
+}
+
+void SmartIDResultReporter::DocumentMatched(const se::smartid::MatchResult &result) {
+    // this method is useless,
+    // SE will not perform additional checks to ensure matched quad is actual document
+}
+
+void SmartIDResultReporter::SnapshotProcessed(const se::smartid::RecognitionResult &result) {
+    // TODO: check for session type and check for any value on non-card sessions
+    //if(HasAnyValue(result) && result.GetMatchResults().size() > 0) {
+    if (result.GetMatchResults().size() > 0) {
+        se::smartid::Quadrangle quad = result.GetMatchResults()[0].GetQuadrangle();
+        NSArray* cardPoints = [NSArray arrayWithObjects:
+                               [NSValue valueWithCGPoint:CGPointMake(quad.GetPoint(0).x, quad.GetPoint(0).y)],
+                               [NSValue valueWithCGPoint:CGPointMake(quad.GetPoint(1).x, quad.GetPoint(1).y)],
+                               [NSValue valueWithCGPoint:CGPointMake(quad.GetPoint(2).x, quad.GetPoint(2).y)],
+                               [NSValue valueWithCGPoint:CGPointMake(quad.GetPoint(3).x, quad.GetPoint(3).y)],
+                               nil];
+         dispatch_async(dispatch_get_main_queue(), ^{
+             [wrapper.delegate didUpdateHint:cardPoints];
+         });
+    } else {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [wrapper.delegate didUpdateHint:nil];
+        });
+    }
+
+    if (!result.IsTerminal())
+        return;
+
+    NSMutableDictionary *fields = [[NSMutableDictionary alloc] init];
+    const std::vector<std::string> &stringFieldNames = result.GetStringFieldNames();
+    for (size_t i = 0; i < stringFieldNames.size(); ++i) {
+        const se::smartid::StringField &field = result.GetStringField(stringFieldNames[i]);
+        RecognitionField* rf = [[RecognitionField alloc] initWithName:[NSString stringWithUTF8String:field.GetName().c_str()]
+                                                                value:[NSString stringWithUTF8String:field.GetUtf8Value().c_str()]
+                                                           isAccepted:field.IsAccepted()
+                                                           confidence:field.GetConfidence()];
+        [fields setObject:rf forKey:rf.Name];
+    }
+
+    if ([NSThread isMainThread]) {
+        [wrapper.delegate didRecognize:fields];
+    } else {
+        dispatch_sync(dispatch_get_main_queue(), ^{
+            [wrapper.delegate didRecognize:fields];
+        });
+    }
+}
+
+SmartIDResultReporter::~SmartIDResultReporter() {
+    wrapper = nil;
+}
+
 @end
