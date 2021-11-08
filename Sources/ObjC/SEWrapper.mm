@@ -60,60 +60,60 @@ struct SmartIDResultReporter : public se::smartid::ResultReporterInterface {
     return self;
 }
 
-//- (id) initWithDelegate:(id<SEResultDelegate>)delegate type:(SESessionType)type {
-//    if (self = [self init]) {
-//        self.delegate = delegate;
-//        __weak typeof(self) weakSelf = self;
-//        resultReporter_.wrapper = weakSelf;
-//        resultReporter_.sessionType = type;
-//
-//        NSString *dataPath = [self pathForSingleDataArchive];
-//        try {
-//            dispatch_async(dispatch_get_global_queue( DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-//                // create recognition engine
-//                self->engine_.reset(new se::smartid::RecognitionEngine(dataPath.UTF8String));
-//                // create default session settings
-//                self->sessionSettings_.reset(self->engine_->CreateSessionSettings());
-//                [self initializeSessionWithReporter:&self->resultReporter_];
-//                self->initialized = true;
-//                self->processing = false;
-//                self->delayDespose = false;
-//            });
-//        } catch (const std::exception &e) {
-//            NSLog(@"Exception thrown during initialization: %s", e.what());
-//        }
-//    }
-//    return self;
-//}
+- (id) initWithDelegate:(id<SEResultDelegate>)delegate type:(SESessionType)type {
+    if (self = [self init]) {
+        self.delegate = delegate;
+        __weak typeof(self) weakSelf = self;
+        resultReporter_.wrapper = weakSelf;
+        resultReporter_.sessionType = type;
 
-//- (void) initializeSessionWithReporter:(SmartIDResultReporter *)resultReporter {
-//    try {
-//        const std::vector<std::vector<std::string>> &supportedDocumentTypes = sessionSettings_->GetSupportedDocumentTypes();
-//        NSLog(@"Supported document types for configured engine:");
-//        for (size_t i = 0; i < supportedDocumentTypes.size(); ++i) {
-//            const std::vector<std::string> &supportedGroup = supportedDocumentTypes[i];
-//            NSMutableString *supportedGroupString = [NSMutableString string];
-//            for (size_t j = 0; j < supportedGroup.size(); ++j) {
-//                [supportedGroupString appendFormat:@"%s", supportedGroup[j].c_str()];
-//                if (j + 1 != supportedGroup.size()) {
-//                    [supportedGroupString appendString:@", "];
-//                }
-//            }
-//            NSLog(@"[%zu]: [%@]", i, supportedGroupString);
-//        }
-//
-//        const std::vector<std::string> &documentTypes = sessionSettings_->GetEnabledDocumentTypes();
-//        NSLog(@"Enabled document types for recognition session to be created:");
-//        for (size_t i = 0; i < documentTypes.size(); ++i) {
-//            NSLog(@"%s", documentTypes[i].c_str());
-//        }
-//
-//        [self enableDocuments];
-//        session_.reset(engine_->SpawnSession(*sessionSettings_, resultReporter));
-//    } catch (const std::exception &e) {
-//        [NSException raise:@"SmartIDException" format:@"Exception thrown during initialization: %s", e.what()];
-//    }
-//}
+        NSString *dataPath = [self pathForSingleDataArchive];
+        try {
+            dispatch_async(dispatch_get_global_queue( DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+                // create recognition engine
+                self->engine_.reset(new se::smartid::RecognitionEngine(dataPath.UTF8String));
+                // create default session settings
+                self->sessionSettings_.reset(self->engine_->CreateSessionSettings());
+                [self initializeSessionWithReporter:&self->resultReporter_];
+                self->initialized = true;
+                self->processing = false;
+                self->delayDespose = false;
+            });
+        } catch (const std::exception &e) {
+            NSLog(@"Exception thrown during initialization: %s", e.what());
+        }
+    }
+    return self;
+}
+
+- (void) initializeSessionWithReporter:(SmartIDResultReporter *)resultReporter {
+    try {
+        const std::vector<std::vector<std::string> > &supportedDocumentTypes = sessionSettings_->GetSupportedDocumentTypes();
+        NSLog(@"Supported document types for configured engine:");
+        for (size_t i = 0; i < supportedDocumentTypes.size(); ++i) {
+            const std::vector<std::string> &supportedGroup = supportedDocumentTypes[i];
+            NSMutableString *supportedGroupString = [NSMutableString string];
+            for (size_t j = 0; j < supportedGroup.size(); ++j) {
+                [supportedGroupString appendFormat:@"%s", supportedGroup[j].c_str()];
+                if (j + 1 != supportedGroup.size()) {
+                    [supportedGroupString appendString:@", "];
+                }
+            }
+            NSLog(@"[%zu]: [%@]", i, supportedGroupString);
+        }
+
+        const std::vector<std::string> &documentTypes = sessionSettings_->GetEnabledDocumentTypes();
+        NSLog(@"Enabled document types for recognition session to be created:");
+        for (size_t i = 0; i < documentTypes.size(); ++i) {
+            NSLog(@"%s", documentTypes[i].c_str());
+        }
+
+        [self enableDocuments];
+        session_.reset(engine_->SpawnSession(*sessionSettings_, resultReporter));
+    } catch (const std::exception &e) {
+        [NSException raise:@"SmartIDException" format:@"Exception thrown during initialization: %s", e.what()];
+    }
+}
 
 - (void) dispose {
     if (initialized) {
