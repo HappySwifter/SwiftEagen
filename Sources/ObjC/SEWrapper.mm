@@ -10,6 +10,8 @@
 #import <UIKit/UIKit.h>
 //#import "smartid_engine.h"
 #include <smartIdEngine/smartid_engine.h>
+#include <memory>
+
 
 struct SmartIDResultReporter : public se::smartid::ResultReporterInterface {
     __weak SEWrapper *wrapper; // to pass data back
