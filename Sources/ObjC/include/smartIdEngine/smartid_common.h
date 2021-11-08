@@ -12,8 +12,8 @@ All rights reserved.
 #define SMARTID_ENGINE_SMARTID_COMMON_H_INCLUDED_
 
 #if defined _MSC_VER
-#pragma warning(push)  
-#pragma warning(disable : 4290)  
+#pragma warning(push)
+#pragma warning(disable : 4290)
 #endif
 
 #if defined _WIN32 && SMARTID_ENGINE_EXPORTS
@@ -316,7 +316,7 @@ enum SMARTID_DLL_EXPORT ImageOrientation {
 } } // namespace se::smartid
 
 #if defined _MSC_VER
-#pragma warning(pop)  
+#pragma warning(pop)
 #endif
 
 #endif // SMARTID_ENGINE_SMARTID_COMMON_H_INCLUDED
