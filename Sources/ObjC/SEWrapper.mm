@@ -9,7 +9,7 @@
 #import "SEWrapper.h"
 #import <UIKit/UIKit.h>
 //#import "smartid_engine.h"
-#include <smartIdEngine/smartid_engine.h>
+#import <smartIdEngine/smartid_engine.h>
 #include <memory>
 
 
