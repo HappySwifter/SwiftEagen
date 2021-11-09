@@ -7,7 +7,7 @@ let package = Package(
     products: [
         .library(
             name: "SwiftyEigen",
-            targets: ["ObjCEigen", "SwiftyEigen"]
+            targets: ["ObjCEigen"/*, "SwiftyEigen"*/]
         )
     ],
     dependencies: [],
@@ -24,10 +24,22 @@ let package = Package(
                 .define("EIGEN_MPL2_ONLY")
             ]
         ),
-        .target(
-            name: "SwiftyEigen",
-            dependencies: ["ObjCEigen"],
-            path: "Sources/Swift"
-        )
+//        .target(
+//            name: "SwiftyEigen",
+//            dependencies: ["ObjCEigen"],
+//            path: "Sources/Swift"
+//        )
     ]
 )
+
+
+//let package = Package(name: "Alamofire",
+//
+//  targets: [.target(name: "Alamofire",
+//                    path: "Source",
+//                    linkerSettings: [.linkedFramework("CFNetwork",
+//                                                      .when(platforms: [.iOS,
+//                                                                        .macOS,
+//                                                                        .tvOS,
+//                                                                        .watchOS]))]),
+//  swiftLanguageVersions: [.v5])
