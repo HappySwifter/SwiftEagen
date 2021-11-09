@@ -21,7 +21,7 @@ let package = Package(
             ],
             cxxSettings: [
                 .headerSearchPath("../CPP/"),
-                .define("EIGEN_MPL2_ONLY")
+//                .define("EIGEN_MPL2_ONLY")
             ]
         ),
 //        .target(
