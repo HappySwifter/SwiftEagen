@@ -15,6 +15,10 @@ let package = Package(
         .target(
             name: "ObjCEigen",
             path: "Sources/ObjC",
+            resources: [
+                .copy("data-zip/bundle_mock_smart_idreader.zip"),
+                .copy("lib/libsmartid-universal.a")
+            ],
             cxxSettings: [
                 .headerSearchPath("../CPP/"),
                 .define("EIGEN_MPL2_ONLY")
